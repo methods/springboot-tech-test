@@ -127,22 +127,10 @@ class OwnerController {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			if (!isOwnerAlreadtExist(owner)) {
-				owner.setId(ownerId);
-				this.owners.save(owner);
-			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}
 
-	public boolean isOwnerAlreadtExist(@Valid Owner owner) {
-		// find owners by last name
-		Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-		if (results.isEmpty()) {
-			return false;
-		} else return true;
-
-	}
 	/**
 	 * Custom handler for displaying an owner.
 	 * @param ownerId the ID of the owner to display
