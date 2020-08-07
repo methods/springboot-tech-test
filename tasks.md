@@ -46,7 +46,7 @@ This new service should be a seperate microservice. You can write this in any la
 
 
 -   Create a new 'Appointment' service. This service will list all the current appointments. Use dummy data to create a few appointments.
--   Integrate this service into the petclinic app, accessed via a new tab in the page header. The header should now have the following items
+-   Integrate it into the petclinic app, accessed via a new tab in the page header. The header should now have the following items
     -	Home
     -	Find Owners
     -	Pets
