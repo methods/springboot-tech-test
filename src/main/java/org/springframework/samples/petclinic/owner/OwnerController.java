@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +65,9 @@ class OwnerController {
 
 	@PostMapping("/owners/new")
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
+		if (StringUtils.hasLength(owner.getLastName()) && owner.isNew() && owner.getPet(owner.getLastName(), true) != null) {
+			result.rejectValue("name", "duplicateEntry", "already exists");
+		}
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
@@ -116,12 +120,13 @@ class OwnerController {
 	@PostMapping("/owners/{ownerId}/edit")
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
+		if (StringUtils.hasLength(owner.getLastName()) && owner.isNew() && owner.getPet(owner.getLastName(), true) != null) {
+			result.rejectValue("name", "duplicateEntry", "already exists");
+		}
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			owner.setId(ownerId);
-			this.owners.save(owner);
 			return "redirect:/owners/{ownerId}";
 		}
 	}
